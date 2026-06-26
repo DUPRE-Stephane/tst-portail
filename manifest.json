@@ -1,23 +1,41 @@
 {
-  "name": "Portail QSE TST",
+  "name": "Portail QSE — TST Travaux Sans Tranchées",
   "short_name": "QSE TST",
-  "description": "Acces centralise aux applications QSE de TST Travaux Sans Tranchees",
+  "description": "Application SMQ·QSE — ISO 9001:2015 · MASE 2024",
   "start_url": "/",
-  "scope": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#1B2F50",
-  "theme_color": "#1B2F50",
-  "lang": "fr",
+  "orientation": "any",
+  "theme_color": "#1A2E50",
+  "background_color": "#1A2E50",
+  "categories": [
+    "business",
+    "productivity"
+  ],
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "/tst_favicon_32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/tst_favicon_64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/tst_apple_touch_icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "apple touch icon"
+    },
+    {
+      "src": "/tst_portal_icon_192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "/tst_portal_icon_512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
