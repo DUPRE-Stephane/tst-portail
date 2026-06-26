@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B2F50">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="QSE TST">
+<title>Portail QSE &middot; TST</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1B2F50;--navy-d:#122040;--orange:#E07A28;
+  --bg:#F2F2F7;--card:#FFFFFF;--border:#E5E5EA;
+  --text:#1C1C1E;--text2:#636366;--text3:#AEAEB2;
+  --r:14px;--rs:9px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* ECRAN PROFIL */
+#ecran-profil{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:var(--navy);padding:32px 24px;text-align:center}
+#ecran-profil.cache{display:none}
+.ep-logo-mark{font-size:32px;font-weight:700;color:#fff;letter-spacing:4px}
+.ep-logo-mark em{color:var(--orange);font-style:normal}
+.ep-logo-sub{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;letter-spacing:0.5px}
+.ep-sep{width:40px;height:3px;background:var(--orange);border-radius:2px;margin:22px auto}
+.ep-titre{font-size:20px;font-weight:600;color:#fff;margin-bottom:6px}
+.ep-sous{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:28px;line-height:1.5}
+.ep-cards{width:100%;max-width:360px;display:flex;flex-direction:column;gap:12px}
+.ep-card{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:var(--r);padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:16px;text-align:left;-webkit-tap-highlight-color:transparent;transition:background 0.15s,transform 0.1s}
+.ep-card:active{transform:scale(0.98);background:rgba(255,255,255,0.14)}
+.ep-card-ico{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.ico-t{background:rgba(224,122,40,0.2)}
+.ico-e{background:rgba(55,138,221,0.2)}
+.ico-d{background:rgba(127,119,221,0.2)}
+.ep-card-txt strong{display:block;font-size:15px;font-weight:600;color:#fff;margin-bottom:3px}
+.ep-card-txt span{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.4}
+.ep-footer{margin-top:28px;font-size:11px;color:rgba(255,255,255,0.2)}
+
+/* PORTAIL */
+#portail{display:none}
+#portail.visible{display:block}
+
+/* HEADER */
+.hdr{background:var(--navy);padding:env(safe-area-inset-top,0) 0 0;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.25)}
+.hdr-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 8px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{font-size:18px;font-weight:700;color:#fff;letter-spacing:3px}
+.logo-mark em{color:var(--orange);font-style:normal}
+.logo-sep{width:1px;height:20px;background:rgba(255,255,255,0.2)}
+.logo-txt strong{display:block;font-size:12px;font-weight:600;color:#fff;line-height:1.2}
+.logo-txt span{font-size:10px;color:rgba(255,255,255,0.4)}
+.profil-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:5px 10px 5px 8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.profil-btn:active{background:rgba(255,255,255,0.18)}
+.p-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.d-t{background:#E07A28}.d-e{background:#378ADD}.d-d{background:#7F77DD}
+.p-nom{font-size:11px;color:#fff;font-weight:500}
+.p-chg{font-size:10px;color:rgba(255,255,255,0.38)}
+
+/* CHIPS */
+.chips{display:flex;gap:6px;padding:8px 16px 10px;overflow-x:auto;background:var(--navy);scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:5px 12px;font-size:12px;font-family:inherit;color:rgba(255,255,255,0.65);white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.chip.on{background:var(--orange);color:#fff;border-color:var(--orange);font-weight:600}
+
+/* SEARCH */
+.search-wrap{background:var(--bg);padding:12px 16px 6px}
+.search-rel{position:relative}
+.s-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none;width:16px;height:16px}
+.search-inp{width:100%;background:var(--card);border:0.5px solid var(--border);border-radius:10px;padding:9px 10px 9px 34px;font-size:15px;font-family:inherit;color:var(--text);outline:none;-webkit-appearance:none;appearance:none}
+.search-inp::placeholder{color:var(--text3)}
+
+/* PWA bar */
+.pwa-bar{display:none;margin:8px 16px;background:var(--navy-d);border-radius:var(--rs);padding:11px 14px;align-items:center;gap:10px;border-left:3px solid var(--orange)}
+.pwa-bar.show{display:flex}
+.pwa-txt strong{font-size:13px;color:#fff;display:block}
+.pwa-txt span{font-size:11px;color:rgba(255,255,255,0.55)}
+.pwa-txt{flex:1}
+.pwa-btn{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:7px 13px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap}
+.pwa-x{background:none;border:none;color:rgba(255,255,255,0.35);cursor:pointer;font-size:18px;line-height:1;font-family:inherit}
+
+/* iOS bar */
+.ios-bar{display:none;margin:8px 16px;background:#fff;border-radius:var(--rs);padding:12px 14px;gap:10px;border:0.5px solid var(--border)}
+.ios-bar.show{display:flex;align-items:flex-start}
+.ios-ico{font-size:20px;line-height:1;flex-shrink:0}
+.ios-txt strong{font-size:12px;color:var(--text);display:block;margin-bottom:3px}
+.ios-txt span{font-size:11px;color:var(--text2);line-height:1.5}
+.ios-x{background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;font-family:inherit;margin-left:auto;flex-shrink:0}
+
+/* GRILLE */
+.grid-wrap{padding:2px 16px 32px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:480px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:768px){.grid{grid-template-columns:repeat(4,1fr)}}
+
+.acard{background:var(--card);border-radius:var(--r);padding:14px 12px 12px;border:0.5px solid var(--border);position:relative;display:flex;flex-direction:column;gap:5px;text-decoration:none;color:inherit;-webkit-tap-highlight-color:transparent;cursor:pointer;transition:transform 0.12s}
+.acard:active{transform:scale(0.97)}
+.acard.soon{opacity:0.5;cursor:default;pointer-events:none}
+.aicon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:3px}
+.aicon svg{width:22px;height:22px}
+.c-bleu{background:#E6F1FB;color:#185FA5}
+.c-vert{background:#E1F5EE;color:#0F6E56}
+.c-ambre{background:#FAEEDA;color:#854F0B}
+.c-violet{background:#EEEDFE;color:#534AB7}
+.c-coral{background:#FAECE7;color:#993C1D}
+.c-rouge{background:#FCEBEB;color:#A32D2D}
+.c-gris{background:#F1EFE8;color:#5F5E5A}
+.aname{font-size:12px;font-weight:700;color:var(--text);line-height:1.3}
+.acat{font-size:11px;color:var(--text3);margin-top:1px}
+.abadge{display:inline-block;background:#E6F1FB;color:#185FA5;font-size:9px;padding:2px 6px;border-radius:8px}
+.b-new{position:absolute;top:8px;right:8px;background:var(--orange);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px}
+.b-soon{position:absolute;top:8px;right:8px;background:var(--text3);color:#fff;font-size:9px;padding:2px 6px;border-radius:8px}
+.vide{grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+
+/* FOOTER */
+.foot{background:var(--navy);padding:14px 16px calc(env(safe-area-inset-bottom,0px) + 14px);text-align:center;border-top:3px solid var(--orange);margin-top:8px}
+.foot p{font-size:11px;color:rgba(255,255,255,0.3);line-height:1.7}
+.foot em{color:var(--orange);font-style:normal}
+</style>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="ico-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="ico-presentation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="13" rx="2"/><path d="M7 21h10M12 17v4"/></symbol>
+  <symbol id="ico-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="ico-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="ico-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6m-5 0v7L4 19a2 2 0 001.8 3h12.4A2 2 0 0020 19l-6-9V3"/><line x1="7" y1="14" x2="17" y2="14"/></symbol>
+  <symbol id="ico-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></symbol>
+  <symbol id="ico-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></symbol>
+  <symbol id="ico-file-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="12" y1="10" x2="12.01" y2="10"/></symbol>
+  <symbol id="ico-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></symbol>
+  <symbol id="ico-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></symbol>
+  <symbol id="ico-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="ico-heartbeat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></symbol>
+</svg>
+
+<!-- ECRAN SELECTION PROFIL -->
+<div id="ecran-profil">
+  <div>
+    <div class="ep-logo-mark">T<em>S</em>T</div>
+    <div class="ep-logo-sub">Portail QSE &middot; Travaux Sans Tranch&eacute;es</div>
+  </div>
+  <div class="ep-sep"></div>
+  <p class="ep-titre">Qui &ecirc;tes-vous&nbsp;?</p>
+  <p class="ep-sous">Votre choix sera m&eacute;moris&eacute;.<br>Vous pourrez le modifier &agrave; tout moment.</p>
+  <div class="ep-cards">
+    <button class="ep-card" data-profil="terrain">
+      <div class="ep-card-ico ico-t">&#128119;</div>
+      <div class="ep-card-txt">
+        <strong>Terrain</strong>
+        <span>Compagnon &mdash; Chef d&rsquo;&eacute;quipe &mdash; Chef de chantier</span>
+      </div>
+    </button>
+    <button class="ep-card" data-profil="encadrement">
+      <div class="ep-card-ico ico-e">&#128203;</div>
+      <div class="ep-card-txt">
+        <strong>Encadrement</strong>
+        <span>Conducteur de travaux</span>
+      </div>
+    </button>
+    <button class="ep-card" data-profil="direction">
+      <div class="ep-card-ico ico-d">&#127970;</div>
+      <div class="ep-card-txt">
+        <strong>Direction</strong>
+        <span>Direction &mdash; R&eacute;f&eacute;rent QSE</span>
+      </div>
+    </button>
+  </div>
+  <p class="ep-footer">TST &mdash; Groupe BUESA INVEST &mdash; D&eacute;velopp&eacute; par Socleo</p>
+</div>
+
+<!-- PORTAIL PRINCIPAL -->
+<div id="portail">
+  <header>
+    <div class="hdr">
+      <div class="hdr-inner">
+        <div class="logo">
+          <div class="logo-mark">T<em>S</em>T</div>
+          <div class="logo-sep"></div>
+          <div class="logo-txt">
+            <strong>Portail QSE</strong>
+            <span>Travaux Sans Tranch&eacute;es</span>
+          </div>
+        </div>
+        <button class="profil-btn" id="btn-profil" aria-label="Changer de profil">
+          <span class="p-dot" id="p-dot"></span>
+          <span class="p-nom" id="p-nom"></span>
+          <span class="p-chg">changer</span>
+        </button>
+      </div>
+      <div class="chips" id="chips">
+        <button class="chip on" data-c="toutes">Toutes</button>
+        <button class="chip" data-c="SST">SST</button>
+        <button class="chip" data-c="Qualit\u00e9">Qualit&eacute;</button>
+        <button class="chip" data-c="Conformit\u00e9">Conformit&eacute;</button>
+        <button class="chip" data-c="Pilotage">Pilotage</button>
+        <button class="chip" data-c="Documentation">Documentation</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="search-wrap">
+    <div class="search-rel">
+      <svg class="s-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search-inp" id="srch" type="search" placeholder="Rechercher une application..." autocomplete="off" autocorrect="off" spellcheck="false">
+    </div>
+  </div>
+
+  <div class="pwa-bar" id="pwa-bar">
+    <div class="pwa-txt">
+      <strong>Installer l&rsquo;application</strong>
+      <span>Acc&egrave;s rapide depuis votre &eacute;cran d&rsquo;accueil</span>
+    </div>
+    <button class="pwa-btn" id="pwa-btn">Installer</button>
+    <button class="pwa-x" id="pwa-x" aria-label="Fermer">&times;</button>
+  </div>
+
+  <div class="ios-bar" id="ios-bar">
+    <div class="ios-ico">&#128196;</div>
+    <div class="ios-txt">
+      <strong>Ajouter &agrave; l&rsquo;&eacute;cran d&rsquo;accueil</strong>
+      <span>Appuyez sur <strong>Partager</strong> &#8594; <strong>Sur l&rsquo;&eacute;cran d&rsquo;accueil</strong></span>
+    </div>
+    <button class="ios-x" id="ios-x" aria-label="Fermer">&times;</button>
+  </div>
+
+  <div class="grid-wrap">
+    <div class="grid" id="grid"><div class="vide">Chargement&hellip;</div></div>
+  </div>
+
+  <footer class="foot">
+    <p>Portail QSE &middot; <em>TST</em> Travaux Sans Tranch&eacute;es &middot; Groupe BUESA INVEST &middot; <span id="yr"></span></p>
+    <p>D&eacute;velopp&eacute; par <em>Socleo</em></p>
+  </footer>
+</div>
+
+<script>
+"use strict";
+document.getElementById("yr").textContent = new Date().getFullYear();
+
+var ICONS={shield:"ico-shield",presentation:"ico-presentation",clipboard:"ico-clipboard",alert:"ico-alert",flask:"ico-flask",book:"ico-book",chart:"ico-chart","file-alert":"ico-file-alert",folder:"ico-folder",users:"ico-users",target:"ico-target",heartbeat:"ico-heartbeat"};
+var PROFILS={terrain:{nom:"Terrain",dot:"d-t"},encadrement:{nom:"Encadrement",dot:"d-e"},direction:{nom:"Direction",dot:"d-d"}};
+var etat={profil:localStorage.getItem("tst-profil")||null,categorie:"toutes",recherche:""};
+var apps=[];
+
+function afficherPortail(profil){
+  etat.profil=profil;
+  localStorage.setItem("tst-profil",profil);
+  var p=PROFILS[profil];
+  document.getElementById("p-nom").textContent=p.nom;
+  document.getElementById("p-dot").className="p-dot "+p.dot;
+  document.getElementById("ecran-profil").classList.add("cache");
+  document.getElementById("portail").classList.add("visible");
+  rendu();
+}
+
+function revenirProfil(){
+  localStorage.removeItem("tst-profil");
+  etat.profil=null;etat.categorie="toutes";etat.recherche="";
+  document.getElementById("srch").value="";
+  document.querySelectorAll(".chip").forEach(function(b){b.classList.remove("on")});
+  document.querySelector(".chip[data-c='toutes']").classList.add("on");
+  document.getElementById("portail").classList.remove("visible");
+  document.getElementById("ecran-profil").classList.remove("cache");
+}
+
+document.getElementById("ecran-profil").addEventListener("click",function(ev){
+  var btn=ev.target.closest(".ep-card");
+  if(btn) afficherPortail(btn.getAttribute("data-profil"));
+});
+document.getElementById("btn-profil").addEventListener("click",revenirProfil);
+
+function rendu(){
+  var f=apps.filter(function(a){
+    return a.profils.indexOf(etat.profil)!==-1&&
+      (etat.categorie==="toutes"||a.categorie===etat.categorie)&&
+      (a.nom+" "+a.description).toLowerCase().indexOf(etat.recherche)!==-1;
+  });
+  var g=document.getElementById("grid");
+  while(g.firstChild){g.removeChild(g.firstChild)}
+  if(!f.length){var v=document.createElement("div");v.className="vide";v.textContent="Aucune application pour ce filtre";g.appendChild(v);return}
+  f.forEach(function(a){
+    var soon=a.badge==="Bient\u00f4t";
+    var tag=(a.actif&&!soon)?"a":"div";
+    var c=document.createElement(tag);
+    c.className="acard"+(soon?" soon":"");
+    if(tag==="a"){c.href=a.url;c.target="_blank";c.rel="noopener noreferrer"}
+    if(a.nouveau){var bn=document.createElement("span");bn.className="b-new";bn.textContent="Nouveau";c.appendChild(bn)}
+    if(soon){var bs=document.createElement("span");bs.className="b-soon";bs.textContent="Bient\u00f4t";c.appendChild(bs)}
+    var id=document.createElement("div");id.className="aicon c-"+a.couleur;
+    var sv=document.createElementNS("http://www.w3.org/2000/svg","svg");sv.setAttribute("aria-hidden","true");
+    var us=document.createElementNS("http://www.w3.org/2000/svg","use");
+    var hr="#"+(ICONS[a.icone]||"ico-folder");
+    us.setAttributeNS("http://www.w3.org/1999/xlink","href",hr);us.setAttribute("href",hr);
+    sv.appendChild(us);id.appendChild(sv);c.appendChild(id);
+    var nm=document.createElement("div");nm.className="aname";nm.textContent=a.nom;c.appendChild(nm);
+    var ct=document.createElement("div");ct.className="acat";ct.textContent=a.categorie;
+    if(a.badge&&!soon&&!a.nouveau){var sp=document.createElement("span");sp.className="abadge";sp.textContent=a.badge;ct.appendChild(document.createTextNode(" \u00b7 "));ct.appendChild(sp)}
+    c.appendChild(ct);g.appendChild(c);
+  });
+}
+
+document.getElementById("chips").addEventListener("click",function(ev){
+  var btn=ev.target.closest(".chip");if(!btn)return;
+  document.querySelectorAll(".chip").forEach(function(b){b.classList.remove("on")});
+  btn.classList.add("on");etat.categorie=btn.getAttribute("data-c");
+  if(etat.profil)rendu();
+});
+document.getElementById("srch").addEventListener("input",function(){
+  etat.recherche=this.value.toLowerCase();if(etat.profil)rendu();
+});
+
+fetch("apps.json").then(function(r){return r.json()}).then(function(d){
+  apps=d;if(etat.profil)afficherPortail(etat.profil);
+}).catch(function(){
+  var g=document.getElementById("grid");g.innerHTML="";
+  var dv=document.createElement("div");dv.className="vide";dv.textContent="Erreur de chargement.";g.appendChild(dv);
+});
+
+var dP=null,pBar=document.getElementById("pwa-bar");
+window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();dP=e;pBar.classList.add("show")});
+document.getElementById("pwa-btn").addEventListener("click",function(){pBar.classList.remove("show");if(dP){dP.prompt();dP.userChoice.then(function(){dP=null})}});
+document.getElementById("pwa-x").addEventListener("click",function(){pBar.classList.remove("show")});
+window.addEventListener("appinstalled",function(){pBar.classList.remove("show");dP=null});
+
+var iosBar=document.getElementById("ios-bar");
+if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!navigator.standalone&&!sessionStorage.getItem("ios-hint")){
+  setTimeout(function(){iosBar.classList.add("show");sessionStorage.setItem("ios-hint","1")},2500);
+}
+document.getElementById("ios-x").addEventListener("click",function(){iosBar.classList.remove("show")});
+
+if("serviceWorker" in navigator){
+  window.addEventListener("load",function(){
+    navigator.serviceWorker.register("/sw.js").then(function(reg){
+      reg.addEventListener("updatefound",function(){
+        var w=reg.installing;if(!w)return;
+        w.addEventListener("statechange",function(){
+          if(w.state==="installed"&&navigator.serviceWorker.controller){
+            var bar=document.createElement("div");
+            bar.style.cssText="position:fixed;bottom:0;left:0;right:0;background:#1B2F50;color:#fff;text-align:center;padding:12px;font-size:13px;z-index:999;border-top:3px solid #E07A28;";
+            bar.innerHTML="Mise \u00e0 jour disponible\u00a0<button onclick=\"location.reload()\" style=\"background:#E07A28;color:#fff;border:none;border-radius:6px;padding:5px 14px;margin-left:8px;font-size:12px;font-weight:700;cursor:pointer;\">Actualiser</button>";
+            document.body.appendChild(bar);
+          }
+        });
+      });
+    });
+  });
+}
+</script>
+</body>
+</html>

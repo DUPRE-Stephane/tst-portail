@@ -1,0 +1,8 @@
+{
+  "name": "tst-portail",
+  "version": "1.0.0",
+  "description": "Portail QSE TST - Travaux Sans Tranchees",
+  "scripts": {
+    "build": "echo Build OK"
+  }
+}
