@@ -7,35 +7,16 @@
   "orientation": "any",
   "theme_color": "#1A2E50",
   "background_color": "#1A2E50",
-  "categories": [
-    "business",
-    "productivity"
-  ],
+  "categories": ["business", "productivity"],
   "icons": [
     {
-      "src": "/tst_favicon_32.png",
-      "sizes": "32x32",
-      "type": "image/png"
-    },
-    {
-      "src": "/tst_favicon_64.png",
-      "sizes": "64x64",
-      "type": "image/png"
-    },
-    {
-      "src": "/tst_apple_touch_icon.png",
-      "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "apple touch icon"
-    },
-    {
-      "src": "/tst_portal_icon_192.png",
+      "src": "/icon-192.png?v=2",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/tst_portal_icon_512.png",
+      "src": "/icon-512.png?v=2",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
